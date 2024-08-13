@@ -8,7 +8,7 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 env = environ.Env()
 
-DEBUG = env('DEBUG') == "True"
+DEBUG = env('DEBUG')
 ALLOWED_HOSTS = eval(env('ALLOWED_HOSTS'))
 SECRET_KEY = env('SECRET_KEY')
 
