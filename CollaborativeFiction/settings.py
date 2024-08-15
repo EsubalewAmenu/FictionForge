@@ -16,6 +16,7 @@ SECRET_KEY = env('SECRET_KEY')
 
 INSTALLED_APPS = [
     'fictions.apps.FictionsConfig', # add fictions app
+    'trustcheck.apps.TrustcheckConfig' , # add trustcheck app
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
