@@ -1,0 +1,6 @@
+<h1>Fictions</h1>
+<ul>
+    {% for fiction in fictions %}
+    <li><a href="{{ fiction.get_absolute_url }}">{{ fiction.title }}</a> by {{ fiction.author }}</li>
+    {% endfor %}
+</ul>
