@@ -3,8 +3,8 @@ import environ
 import sys, os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 
 env = environ.Env()
 
@@ -15,6 +15,7 @@ SECRET_KEY = env('SECRET_KEY')
 # Application definition
 
 INSTALLED_APPS = [
+    'fictions.apps.FictionsConfig', # add fictions app
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
