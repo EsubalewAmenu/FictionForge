@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Category, DataSubmission , Evidence , Verification
+from .models import Category, DataSubmission , Evidence , Verification , ReputationChange
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -10,6 +10,7 @@ class DataSubmissionSerializer(serializers.ModelSerializer):
     class Meta:
         model = DataSubmission
         fields = '__all__'
+        
 class EvidenceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Evidence
@@ -19,4 +20,8 @@ class VerificationSerializer(serializers.ModelSerializer):
      class Meta:
          model = Verification
          ields = '__all__'
-                
+         
+class ReputationChangeSerializer(serializers.ModelSerializer):
+     class Meta:
+         model = ReputationChange
+         ields = '__all__'
