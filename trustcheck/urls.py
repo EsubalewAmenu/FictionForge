@@ -7,7 +7,7 @@ router.register(r'categories', CategoryViewSet)
 router.register(r'data-submissions', DataSubmissionViewSet)
 router.register(r'evidences', EvidenceViewSet)
 router.register(r'verifications', VerificationViewSet)
-router.register(r'reputaion-change', ReputationChangeViewSet)
+router.register(r'reputaion-changes', ReputationChangeViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),

@@ -19,9 +19,9 @@ class EvidenceSerializer(serializers.ModelSerializer):
 class VerificationSerializer(serializers.ModelSerializer):
      class Meta:
          model = Verification
-         ields = '__all__'
+         fields = '__all__'
          
 class ReputationChangeSerializer(serializers.ModelSerializer):
      class Meta:
          model = ReputationChange
-         ields = '__all__'
+         fields = '__all__'
