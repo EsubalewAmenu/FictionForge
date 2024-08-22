@@ -1,13 +1,15 @@
 from rest_framework import viewsets
-from .models import Category, DataSubmission
-from .serializers import CategorySerializer, DataSubmissionSerializer
+from .models import Category, DataSubmission ,Evidence
+from .serializers import CategorySerializer, DataSubmissionSerializer ,EvidenceSerializer
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    # Optionally, add permissions or custom methods here
 
 class DataSubmissionViewSet(viewsets.ModelViewSet):
     queryset = DataSubmission.objects.all()
     serializer_class = DataSubmissionSerializer
-    # Optionally, add permissions or custom methods here
+    
+class EvidenceViewSet(viewsets.ModelViewSet):
+    queryset = Evidence.objects.all()
+    serializer_class = EvidenceSerializer
