@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Category, DataSubmission , Evidence
+from .models import Category, DataSubmission , Evidence , Verification
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -15,3 +15,8 @@ class EvidenceSerializer(serializers.ModelSerializer):
         model = Evidence
         fields = '__all__'
         
+class VerificationSerializer(serializers.ModelSerializer):
+     class Meta:
+         model = Verification
+         ields = '__all__'
+                

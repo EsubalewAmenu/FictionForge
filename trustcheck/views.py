@@ -1,6 +1,6 @@
 from rest_framework import viewsets
-from .models import Category, DataSubmission ,Evidence
-from .serializers import CategorySerializer, DataSubmissionSerializer ,EvidenceSerializer
+from .models import Category, DataSubmission ,Evidence ,Verification
+from .serializers import CategorySerializer, DataSubmissionSerializer ,EvidenceSerializer ,VerificationSerializer
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
@@ -13,3 +13,7 @@ class DataSubmissionViewSet(viewsets.ModelViewSet):
 class EvidenceViewSet(viewsets.ModelViewSet):
     queryset = Evidence.objects.all()
     serializer_class = EvidenceSerializer
+    
+class VerificationViewSet(viewsets.ModelViewSet):
+    queryset = Verification.objects.all()
+    serializer_class = VerificationSerializer
