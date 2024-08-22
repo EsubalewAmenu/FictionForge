@@ -14,6 +14,10 @@ class Category(models.Model):
         return self.name    
 
 class DataSubmission(models.Model):
+    user = models.ForeignKey(
+        'auth.User',
+        on_delete=models.CASCADE
+    )
     title = models.CharField(max_length=255)
     content = models.TextField()
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
@@ -35,6 +39,10 @@ class Evidence(models.Model):
         'DataSubmission',
         on_delete=models.CASCADE,
         related_name='evidences'
+    )
+    user = models.ForeignKey(
+        'auth.User',
+        on_delete=models.CASCADE
     )
     description = models.TextField(
         help_text="Provide a brief description of the evidence."
@@ -68,6 +76,10 @@ class Verification(models.Model):
         'DataSubmission',
         on_delete=models.CASCADE,
         related_name='verifications'
+    )
+    user = models.ForeignKey(
+        'auth.User',
+        on_delete=models.CASCADE
     )
     vote = models.BooleanField(
         help_text="Indicates if the data is valid (True) or invalid (False)."
