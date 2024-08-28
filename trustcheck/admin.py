@@ -1,6 +1,11 @@
 from django.contrib import admin
-from .models import Category, DataSubmission ,Evidence, Verification, ReputationChange
+from .models import Category, DataSubmission ,Evidence, Verification, ReputationChange ,ExternalUser
 
+@admin.register(ExternalUser)
+class ExternalUserAdmin(admin.ModelAdmin):
+    list_display = ( 'user', 'mpxr')
+
+    
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'parent', 'description')

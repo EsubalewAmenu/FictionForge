@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib.auth.models import User
+
 
 class Category(models.Model):
     name = models.CharField(max_length=255)
@@ -11,13 +13,11 @@ class Category(models.Model):
         verbose_name_plural = "Categories"
 
     def __str__(self):
-        return self.name    
+        return self.name
+
 
 class DataSubmission(models.Model):
-    user = models.ForeignKey(
-        'auth.User',
-        on_delete=models.CASCADE
-    )
+
     title = models.CharField(max_length=255)
     content = models.TextField()
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
@@ -32,7 +32,7 @@ class DataSubmission(models.Model):
 
     def __str__(self):
         return self.title
-    
+
 
 class Evidence(models.Model):
     submission = models.ForeignKey(
@@ -41,7 +41,7 @@ class Evidence(models.Model):
         related_name='evidences'
     )
     user = models.ForeignKey(
-        'auth.User',
+        User,  
         on_delete=models.CASCADE
     )
     description = models.TextField(
@@ -71,6 +71,7 @@ class Evidence(models.Model):
     def __str__(self):
         return f"Evidence for '{self.submission.title}'"
 
+
 class Verification(models.Model):
     submission = models.ForeignKey(
         'DataSubmission',
@@ -78,7 +79,7 @@ class Verification(models.Model):
         related_name='verifications'
     )
     user = models.ForeignKey(
-        'auth.User',
+        User,  
         on_delete=models.CASCADE
     )
     vote = models.BooleanField(
@@ -103,9 +104,10 @@ class Verification(models.Model):
     def __str__(self):
         return f"Verification on '{self.submission.title}'"
 
+
 class ReputationChange(models.Model):
     user = models.ForeignKey(
-        'auth.User',
+        User,  
         on_delete=models.CASCADE
     )
     change = models.IntegerField(
@@ -126,3 +128,5 @@ class ReputationChange(models.Model):
 
     def __str__(self):
         return f"Reputation change for {self.user.username}: {self.change} points"
+
+
