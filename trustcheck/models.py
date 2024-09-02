@@ -133,3 +133,15 @@ class ReputationChange(models.Model):
         return f"Reputation change for {self.user.username}: {self.change} points"
 
 
+class ExternalUser(models.Model):
+    """Model to store data about external users fetched from the API."""
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    mpxr = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=0.0,
+        help_text="mpxr value fetched from the external API."
+    )
+
+    def __str__(self):
+        return f"External Data for {self.user.username}: mpxr {self.mpxr}"
