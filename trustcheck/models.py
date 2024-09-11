@@ -17,7 +17,10 @@ class Category(models.Model):
 
 
 class DataSubmission(models.Model):
-
+    user = models.ForeignKey(
+        User,  
+        on_delete=models.CASCADE
+    )
     title = models.CharField(max_length=255)
     content = models.TextField()
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
