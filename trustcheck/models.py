@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
+
 class Category(models.Model):
     name = models.CharField(max_length=255)
     parent = models.ForeignKey(
@@ -16,6 +17,17 @@ class Category(models.Model):
         return self.name
 
 
+class DataType(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField(blank=True, null=True)
+
+    class Meta:
+        verbose_name_plural = "Data Types"
+
+    def __str__(self):
+        return self.name
+
+
 class DataSubmission(models.Model):
     user = models.ForeignKey(
         User,  
@@ -24,6 +36,7 @@ class DataSubmission(models.Model):
     title = models.CharField(max_length=255)
     content = models.TextField()
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
+    data_type = models.ForeignKey(DataType, on_delete=models.SET_NULL, null=True)  # New field
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     is_verified = models.BooleanField(default=False)

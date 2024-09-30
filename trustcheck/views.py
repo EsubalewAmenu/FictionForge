@@ -4,8 +4,7 @@ from .serializers import CategorySerializer, DataSubmissionSerializer ,EvidenceS
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
-    serializnoba
-    er_class = CategorySerializer
+    serializer_class = CategorySerializer
 
 class DataSubmissionViewSet(viewsets.ModelViewSet):
     queryset = DataSubmission.objects.all()
