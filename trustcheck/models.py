@@ -4,9 +4,7 @@ from django.contrib.auth.models import User
 
 class Category(models.Model):
     name = models.CharField(max_length=255)
-    parent = models.ForeignKey(
-        'self', null=True, blank=True, on_delete=models.SET_NULL, related_name='subcategories'
-    )
+    parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.SET_NULL, related_name='subcategories')
     description = models.TextField(blank=True, null=True)
 
     class Meta:
@@ -15,15 +13,19 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+class DataType(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.name
 
 class DataSubmission(models.Model):
-    user = models.ForeignKey(
-        User,  
-        on_delete=models.CASCADE
-    )
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     content = models.TextField()
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
+    data_type = models.ForeignKey(DataType, on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     is_verified = models.BooleanField(default=False)
@@ -35,7 +37,6 @@ class DataSubmission(models.Model):
 
     def __str__(self):
         return self.title
-
 
 class Evidence(models.Model):
     submission = models.ForeignKey(
