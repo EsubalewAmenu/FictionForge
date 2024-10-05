@@ -4,8 +4,15 @@ from django.contrib.auth.models import User
 
 class Category(models.Model):
     name = models.CharField(max_length=255)
-    parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.SET_NULL, related_name='subcategories')
     description = models.TextField(blank=True, null=True)
+    parent = models.ForeignKey(
+        'self',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='subcategories',
+        help_text="Parent Category for hierarchical categorization."
+    )
 
     class Meta:
         verbose_name_plural = "Categories"
