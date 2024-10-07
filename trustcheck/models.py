@@ -12,10 +12,18 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
-
+    
 class DataType(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
+    parent = models.ForeignKey(
+        'self',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='sub_data_types',
+        help_text="Parent DataType for hierarchical categorization."
+    )
 
     def __str__(self):
         return self.name
