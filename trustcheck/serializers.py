@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Category, DataSubmission , Evidence , Verification , ReputationChange
+from .models import Category, DataSubmission , Evidence , Verification , ReputationChange ,DataType
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -25,3 +25,9 @@ class ReputationChangeSerializer(serializers.ModelSerializer):
      class Meta:
          model = ReputationChange
          fields = '__all__'
+         
+
+class DataTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DataType
+        fields = '__all__'

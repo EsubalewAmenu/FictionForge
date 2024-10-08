@@ -1,6 +1,6 @@
 from rest_framework import viewsets
-from .models import Category, DataSubmission ,Evidence ,Verification , ReputationChange
-from .serializers import CategorySerializer, DataSubmissionSerializer ,EvidenceSerializer ,VerificationSerializer ,ReputationChangeSerializer
+from .models import Category, DataSubmission ,Evidence ,Verification , ReputationChange ,DataType
+from .serializers import CategorySerializer, DataSubmissionSerializer ,EvidenceSerializer ,VerificationSerializer ,ReputationChangeSerializer,DataTypeSerializer
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
@@ -22,3 +22,6 @@ class ReputationChangeViewSet(viewsets.ModelViewSet):
     queryset = ReputationChange.objects.all()
     serializer_class = ReputationChangeSerializer
 
+class DataTypeViewSet(viewsets.ModelViewSet):
+    queryset = DataType.objects.all()
+    serializer_class = DataTypeSerializer
