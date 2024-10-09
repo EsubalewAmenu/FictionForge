@@ -27,6 +27,9 @@ INSTALLED_APPS = [
     # 3rd party
     'rest_framework',
     'corsheaders',
+    'django.contrib.sites',
+    'django_comments',
+
 ]
 
 MIDDLEWARE = [
@@ -60,7 +63,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'CollaborativeFiction.wsgi.application'
-
+# Required by django-contrib-comments
+SITE_ID = 1
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
