@@ -6,7 +6,20 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = '__all__'
-
+        
+class CommentSerializer(serializers.ModelSerializer):
+    user = serializers.StringRelatedField(read_only=True)  
+    class Meta:
+        model = Comment
+        fields = [
+            'id',
+            'user',
+            'comment',
+            'submit_date',
+            'is_public',
+        ]
+        read_only_fields = ['id', 'user', 'submit_date', 'is_public']
+        
 class DataSubmissionSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(many=True, read_only=True)  
 
@@ -24,30 +37,41 @@ class DataSubmissionSerializer(serializers.ModelSerializer):
             'is_verified',
             'comments',  
         ]
-
-class CommentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Comment
-        fields = [
-            'id',
-            'content_type',
-            'object_pk',
-            'site',
-            'user',
-            'user_name',
-            'user_email',
-            'comment',
-            'submit_date',
-            'ip_address',
-            'is_public',
-            'is_removed',
-        ]
-        read_only_fields = ['submit_date', 'ip_address', 'is_public', 'is_removed']
+        read_only_fields = ['id', 'user', 'created_at', 'updated_at', 'is_verified']
 
 class CommentCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
-        fields = ['comment']
+        fields = [
+            'content_type',
+            'object_pk', 
+            'comment',
+            'user_name',
+            'user_email',
+            'user_url',
+        ]
+
+    def validate(self, attrs):
+        if not self.context['request'].user.is_authenticated:
+            if not attrs.get('user_name'):
+                raise serializers.ValidationError("Name is required for anonymous comments.")
+        return attrs
+
+    def create(self, validated_data):
+        request = self.context['request']
+        user = request.user if request.user.is_authenticated else None
+        comment = Comment.objects.create(
+            content_type=validated_data['content_type'],
+            object_pk=validated_data['object_pk'], 
+            comment=validated_data['comment'],
+            user=user,
+            user_name=validated_data.get('user_name', ''),
+            user_email=validated_data.get('user_email', ''),
+            user_url=validated_data.get('user_url', ''),
+            site_id=1  
+        )
+        return comment
+
         
 class EvidenceSerializer(serializers.ModelSerializer):
     class Meta:

@@ -6,7 +6,8 @@ from .views import (
  DataSubmissionViewSet,
  EvidenceViewSet,
  VerificationViewSet,
- ReputationChangeViewSet
+ ReputationChangeViewSet,
+ CommentViewSet 
  )
 
 router = DefaultRouter()
@@ -16,6 +17,7 @@ router.register(r'data-submissions', DataSubmissionViewSet)
 router.register(r'evidences', EvidenceViewSet)
 router.register(r'verifications', VerificationViewSet)
 router.register(r'reputaion-changes', ReputationChangeViewSet)
+router.register(r'comments', CommentViewSet) 
 
 urlpatterns = [
     path('', include(router.urls)),
