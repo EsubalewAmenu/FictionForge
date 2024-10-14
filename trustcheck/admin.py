@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, DataSubmission ,Evidence, Verification, ReputationChange ,ExternalUser
+from .models import Category, DataSubmission, Evidence, Verification, ReputationChange, ExternalUser, DataType, Comment
 
 @admin.register(ExternalUser)
 class ExternalUserAdmin(admin.ModelAdmin):
@@ -60,3 +60,17 @@ class ReputationChangeAdmin(admin.ModelAdmin):
             'fields': ('user', 'change', 'reason', 'created_at')
         }),
     )
+
+
+@admin.register(DataType)
+class DataTypeAdmin(admin.ModelAdmin):
+    list_display = ('name', 'description')
+    search_fields = ('name',)
+    list_filter = ('name',)
+    
+
+# @admin.register(Comment)
+# class CommentAdmin(admin.ModelAdmin):
+#     list_display = ('id', 'content_type', 'object_pk', 'user', 'comment', 'submit_date', 'is_public', 'is_removed')
+#     list_filter = ('is_public', 'is_removed', 'submit_date', 'content_type')
+#     search_fields = ('comment', 'user__username', 'user_email')

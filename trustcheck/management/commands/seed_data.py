@@ -1,11 +1,40 @@
+# trustcheck/management/commands/seed_data.py
+
 from django.core.management.base import BaseCommand
 from trustcheck.models import Category, DataType
 
 class Command(BaseCommand):
-    help = 'Seed the database with initial categories, subcategories, and data types'
+    help = 'Clear the database and seed with initial categories, subcategories, and data types'
 
     def handle(self, *args, **kwargs):
-        # Seed Categories and Subcategories
+        self.stdout.write(self.style.WARNING('Starting database reset and seeding process...'))
+        self.clear_existing_data()
+        self.seed_categories()
+        self.seed_data_types()
+        self.stdout.write(self.style.SUCCESS('Database reset and seeding completed successfully.'))
+
+    def clear_existing_data(self):
+        """
+        Deletes all existing Category and DataType entries.
+        """
+        self.stdout.write(self.style.WARNING('Clearing existing data...'))
+
+        # Delete DataType entries first to handle hierarchical relationships
+        data_type_count = DataType.objects.count()
+        DataType.objects.all().delete()
+        self.stdout.write(self.style.SUCCESS(f'Deleted {data_type_count} DataType entries.'))
+
+        # Delete Category entries
+        category_count = Category.objects.count()
+        Category.objects.all().delete()
+        self.stdout.write(self.style.SUCCESS(f'Deleted {category_count} Category entries.'))
+
+    def seed_categories(self):
+        """
+        Seeds the database with predefined categories and their subcategories.
+        """
+        self.stdout.write(self.style.WARNING('Seeding Categories...'))
+
         categories = {
             "Politics": [
                 "Election Results",
@@ -81,12 +110,29 @@ class Command(BaseCommand):
 
         for category_name, subcategory_names in categories.items():
             # Create main category
-            category, _ = Category.objects.get_or_create(name=category_name)
+            category, created = Category.objects.get_or_create(name=category_name)
+            if created:
+                self.stdout.write(self.style.SUCCESS(f'  Created Category: {category_name}'))
+            else:
+                self.stdout.write(self.style.NOTICE(f'  Category already exists: {category_name}'))
+
             # Create subcategories for this category
             for subcategory_name in subcategory_names:
-                Category.objects.get_or_create(name=subcategory_name, parent=category)
+                subcategory, sub_created = Category.objects.get_or_create(
+                    name=subcategory_name,
+                    parent=category
+                )
+                if sub_created:
+                    self.stdout.write(self.style.SUCCESS(f'    Created Subcategory: {subcategory_name}'))
+                else:
+                    self.stdout.write(self.style.NOTICE(f'    Subcategory already exists: {subcategory_name}'))
 
-        # Seed Data Types
+    def seed_data_types(self):
+        """
+        Seeds the database with predefined data types and their sub-data-types.
+        """
+        self.stdout.write(self.style.WARNING('Seeding Data Types...'))
+
         data_types = {
             "News Articles": [
                 "Online News Reports",
@@ -142,7 +188,21 @@ class Command(BaseCommand):
             ]
         }
 
-        for data_type_name, descriptions in data_types.items():
-            data_type, _ = DataType.objects.get_or_create(name=data_type_name)
+        for data_type_name, subdata_type_names in data_types.items():
+            # Create main data type
+            data_type, dt_created = DataType.objects.get_or_create(name=data_type_name)
+            if dt_created:
+                self.stdout.write(self.style.SUCCESS(f'  Created DataType: {data_type_name}'))
+            else:
+                self.stdout.write(self.style.NOTICE(f'  DataType already exists: {data_type_name}'))
 
-        self.stdout.write(self.style.SUCCESS('Database seeded successfully'))
+            # Create sub-data-types
+            for subdata_type_name in subdata_type_names:
+                subdata_type, sub_dt_created = DataType.objects.get_or_create(
+                    name=subdata_type_name,
+                    parent=data_type
+                )
+                if sub_dt_created:
+                    self.stdout.write(self.style.SUCCESS(f'    Created Sub-DataType: {subdata_type_name}'))
+                else:
+                    self.stdout.write(self.style.NOTICE(f'    Sub-DataType already exists: {subdata_type_name}'))
