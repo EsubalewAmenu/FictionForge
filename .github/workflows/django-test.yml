@@ -28,5 +28,6 @@ jobs:
     - name: Run Tests
       env:
         DEBUG: 'True'  # Set the DEBUG environment variable here
+        ALLOWED_HOSTS: '["localhost", "127.0.0.1"]'  # Set ALLOWED_HOSTS here
       run: |
         python manage.py test
