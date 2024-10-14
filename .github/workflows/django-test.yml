@@ -26,5 +26,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirement.txt
     - name: Run Tests
+      env:
+        DEBUG: 'True'  # Set the DEBUG environment variable here
       run: |
         python manage.py test
