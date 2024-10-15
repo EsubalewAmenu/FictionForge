@@ -13,7 +13,7 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        python-version: [3.7, 3.8, 3.9]
+        python-version: [3.9]
 
     steps:
     - uses: actions/checkout@v4
@@ -27,7 +27,13 @@ jobs:
         pip install -r requirement.txt
     - name: Run Tests
       env:
-        DEBUG: 'True'  # Set the DEBUG environment variable here
-        ALLOWED_HOSTS: '["localhost", "127.0.0.1"]'  # Set ALLOWED_HOSTS here
+        DEBUG: ${{ secrets.DEBUG }}  # Set the DEBUG environment variable here
+        ALLOWED_HOSTS: '[${{ secrets.ALLOWED_HOSTS }}]'  # Set ALLOWED_HOSTS here
+        SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        COM_ID: ${{ secrets.COM_ID }}
+        EXTERNAL_USER_API_URL: ${{ secrets.EXTERNAL_USER_API_URL }}
+        X_API_KEY: ${{ secrets.X_API_KEY }}
+
+        
       run: |
         python manage.py test
