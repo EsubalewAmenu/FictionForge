@@ -33,7 +33,7 @@ on:
   workflow_run:
     workflows: ["Project Tests"]  # django-test.yml workflow
     types:
-      - completed
+      - completed  # will start after django-test.yml workflow completed
 
 
 env:
