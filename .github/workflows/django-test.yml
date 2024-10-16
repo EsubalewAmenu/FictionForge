@@ -1,10 +1,10 @@
-name: Django CI
+name: Django Tests
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "aws-workflow" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "aws-workflow" ]
 
 jobs:
   build:
