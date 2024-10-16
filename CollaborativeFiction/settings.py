@@ -9,7 +9,7 @@ sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 env = environ.Env()
 
 DEBUG = env('DEBUG')
-ALLOWED_HOSTS = eval(env('ALLOWED_HOSTS'))
+ALLOWED_HOSTS = ["*"] #eval(env('ALLOWED_HOSTS'))
 SECRET_KEY = env('SECRET_KEY')
 
 # Application definition
@@ -127,3 +127,7 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://trustcheck.mindplex.ai',
+]
