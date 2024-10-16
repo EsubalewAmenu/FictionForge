@@ -26,14 +26,12 @@
 
 name: Deploy to Amazon ECS
 
-if: ${{ github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'prod' && github.event.pull_request.head.ref == 'prod-prod' }}
-
 on:
   push:
     branches:
       - prod
   workflow_run:
-    workflows: ["Project Tests"]  # django-test.yml workflow test
+    workflows: ["Project Tests"]  # django-test.yml workflow
     types:
       - completed
 
@@ -53,13 +51,17 @@ permissions:
 
 jobs:
   deploy:
-    name: Deploy
-   
+    name: Deploy   
     runs-on: ubuntu-latest
     environment: production
 
     # Only run if the previous workflow succeeded
     # if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+
+    # Only run if the previous workflow succeeded and branch conditions are met
+    if: ${{ github.ref == 'refs/heads/prod' && github.event.before != '0000000000000000000000000000000000000000' && contains(github.event.commits[*].message, 'Merge pull request') }}
+
 
     steps:
     - name: Checkout
