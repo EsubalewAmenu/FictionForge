@@ -56,7 +56,7 @@ jobs:
     environment: production
 
     # Only run if the previous workflow succeeded
-    # if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     steps:
     - name: Checkout
@@ -92,7 +92,7 @@ jobs:
         sed -i 's|REPLACE_ME_ALLOWED_HOSTS|*|g' .aws/task-definition.json
         sed -i 's|REPLACE_ME_SECRET_KEY|${{ secrets.SECRET_KEY }}|g' .aws/task-definition.json
         sed -i 's|REPLACE_ME_COM_ID|${{ secrets.COM_ID }}|g' .aws/task-definition.json
-        sed -i 's|REPLACE_ME_EXTERNAL_USER_API_URL|${{ secrets.EXTERNAL_USER_API_URL }}|g' .aws/task-definition.json
+        sed -i 's|REPLACE_ME_EXTERNAL_USER_API_URL|${{ secrets.STAGINGREP_USER_API_URL }}|g' .aws/task-definition.json
         sed -i 's|REPLACE_ME_X_API_KEY|${{ secrets.X_API_KEY }}|g' .aws/task-definition.json
 
     - name: Fill in the new image ID in the Amazon ECS task definition
