@@ -1,10 +1,10 @@
-name: Django Tests
+name: Project Tests
 
 on:
   push:
-    branches: [ "aws-workflow" ]
+    branches: [ "master" ]
   pull_request:
-    branches: [ "aws-workflow" ]
+    branches: [ "master" ]
 
 jobs:
   build:
