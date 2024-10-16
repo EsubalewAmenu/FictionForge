@@ -29,7 +29,7 @@ name: Deploy to Amazon ECS
 on:
   push:
     branches:
-      - master
+      - prod
   workflow_run:
     workflows: ["Project Tests"]  # django-test.yml workflow
     types:
@@ -52,11 +52,13 @@ permissions:
 jobs:
   deploy:
     name: Deploy
+    if: ${{ github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'prod' && github.event.pull_request.head.ref == 'prod-prod' }}
+   
     runs-on: ubuntu-latest
     environment: production
 
     # Only run if the previous workflow succeeded
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    # if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     steps:
     - name: Checkout
