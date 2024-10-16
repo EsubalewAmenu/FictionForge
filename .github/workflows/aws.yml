@@ -28,8 +28,7 @@ name: Deploy to Amazon ECS
 
 on:
   push:
-    branches:
-      - branches: [ "aws-workflow" ]
+    branches: [ "aws-workflow" ]
   workflow_run:
     workflows: ["Django Tests"]  # Replace with the actual name of your django-test.yml workflow
     types:
