@@ -26,6 +26,8 @@
 
 name: Deploy to Amazon ECS
 
+if: ${{ github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'prod' && github.event.pull_request.head.ref == 'prod-prod' }}
+
 on:
   push:
     branches:
@@ -52,7 +54,6 @@ permissions:
 jobs:
   deploy:
     name: Deploy
-    if: ${{ github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'prod' && github.event.pull_request.head.ref == 'prod-prod' }}
    
     runs-on: ubuntu-latest
     environment: production
