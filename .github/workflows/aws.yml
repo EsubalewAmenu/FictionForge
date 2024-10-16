@@ -31,7 +31,7 @@ on:
     branches:
       - prod
   workflow_run:
-    workflows: ["Project Tests"]  # django-test.yml workflow
+    workflows: ["Project Tests"]  # django-test.yml workflow test
     types:
       - completed
 
