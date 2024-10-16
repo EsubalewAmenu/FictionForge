@@ -9,7 +9,7 @@ sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 env = environ.Env()
 
 DEBUG = env('DEBUG')
-ALLOWED_HOSTS = eval(env('ALLOWED_HOSTS'))
+ALLOWED_HOSTS = ["*"] #eval(env('ALLOWED_HOSTS'))
 SECRET_KEY = env('SECRET_KEY')
 
 # Application definition
