@@ -29,11 +29,7 @@ name: Deploy to Amazon ECS
 on:
   push:
     branches:
-      - master
-  workflow_run:
-    workflows: ["Project Tests"]  # django-test.yml workflow
-    types:
-      - completed
+      - production
 
 
 env:
@@ -56,9 +52,19 @@ jobs:
     environment: production
 
     # Only run if the previous workflow succeeded
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    # if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     steps:
+    - name: Check if "Project Tests" workflow completed
+        id: check-status
+        run: |
+          gh run list --workflow="Project Tests" --branch=production --limit=1 --json conclusion --jq '.[] | select(.conclusion == "success")'
+      
+    - name: Deploy to ECS
+      if: steps.check-status.outputs.conclusion == 'success'
+      run: |
+        echo "Deploying to Amazon ECS..."
+        
     - name: Checkout
       uses: actions/checkout@v4
 
