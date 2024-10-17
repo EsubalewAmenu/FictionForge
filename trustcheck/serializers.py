@@ -16,10 +16,10 @@ class CommentSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'user',
+            'content_type',
             'comment',
             'submit_date',
             'is_public',
- 
         ]
         read_only_fields = ['id', 'user', 'submit_date', 'is_public']
         
@@ -36,7 +36,6 @@ class DataSubmissionSerializer(serializers.ModelSerializer):
         return [{"user": comment.user.username, "comment": comment.comment, "date": comment.submit_date} for comment in comments]
 
 class CommentCreateSerializer(serializers.ModelSerializer):
-    # object_pk = serializers.CharField(read_only=True)
 
     class Meta:
         model = Comment
@@ -49,17 +48,7 @@ class CommentCreateSerializer(serializers.ModelSerializer):
             'user_url',
         ]
 
-    # def validate(self, attrs):
-    #     request = self.context['request']
-    #     print('sssss',request.data)
-
-    #     if not request.user.is_authenticated:
-    #         if not attrs.get('user_name'):
-    #             raise serializers.ValidationError("Name is required for anonymous comments.")
-        
-
-
-
+ 
     def create(self, validated_data):
         request = self.context['request']
         user = request.user if request.user.is_authenticated else None
@@ -77,9 +66,27 @@ class CommentCreateSerializer(serializers.ModelSerializer):
         return comment
         
 class EvidenceSerializer(serializers.ModelSerializer):
+    
+    comments = serializers.SerializerMethodField()
+
     class Meta:
         model = Evidence
-        fields = '__all__'
+        fields = [
+            'id',
+            'submission',
+            'user',
+            'description',
+            'link',
+            'document',
+            'created_at',
+            'voters',
+            'comments',
+        ]
+        
+    def get_comments(self, obj):
+        content_type = ContentType.objects.get_for_model(obj)
+        comments = Comment.objects.filter(object_pk=obj.pk, content_type=content_type).order_by('-submit_date')
+        return [{"user": comment.user.username, "comment": comment.comment, "date": comment.submit_date} for comment in comments]
         
 class VerificationSerializer(serializers.ModelSerializer):
      class Meta:

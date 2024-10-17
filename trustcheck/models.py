@@ -69,7 +69,7 @@ class Evidence(models.Model):
         'DataSubmission',
         on_delete=models.CASCADE,
         related_name='evidences'
-    )
+    ) 
     user = models.ForeignKey(
         User,  
         on_delete=models.CASCADE
@@ -92,14 +92,36 @@ class Evidence(models.Model):
         auto_now_add=True,
         help_text="Timestamp when the evidence was created."
     )
+    
+    voters = models.ManyToManyField(User, related_name='voted_evidences', blank=True)
+    
+    comments = GenericRelation(Comment)
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, null=True)
+    object_id = models.PositiveIntegerField(null=True)
+    content_object = GenericForeignKey('content_type', 'object_id')
 
     class Meta:
         verbose_name = "Evidence"
         verbose_name_plural = "Evidences"
         ordering = ['-created_at']
+        unique_together = ('submission', 'link', 'document', 'description')
 
     def __str__(self):
         return f"Evidence for '{self.submission.title}'"
+
+    def add_vote(self, user):
+        """Allow users to vote on this evidence."""
+        if not self.voters.filter(id=user.id).exists():
+            self.voters.add(user)
+
+    def remove_vote(self, user):
+        """Allow users to remove their vote."""
+        if self.voters.filter(id=user.id).exists():
+            self.voters.remove(user)
+
+    def total_votes(self):
+        """Return the total number of votes."""
+        return self.voters.count()
 
 
 class Verification(models.Model):
