@@ -56,9 +56,9 @@ jobs:
 
     steps:
     - name: Check if "Project Tests" workflow completed
-        id: check-status
-        run: |
-          gh run list --workflow="Project Tests" --branch=production --limit=1 --json conclusion --jq '.[] | select(.conclusion == "success")'
+      id: check-status
+      run: |
+        gh run list --workflow="Project Tests" --branch=production --limit=1 --json conclusion --jq '.[] | select(.conclusion == "success")'
       
     - name: Deploy to ECS
       if: steps.check-status.outputs.conclusion == 'success'
