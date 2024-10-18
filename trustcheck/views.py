@@ -48,7 +48,7 @@ class EvidenceViewSet(viewsets.ModelViewSet):
             submission=submission, 
             link=evidence_link, 
             document=evidence_file, 
-            description=evidence_description
+            description__icontains=evidence_description
         ).first()
 
         if existing_evidence:

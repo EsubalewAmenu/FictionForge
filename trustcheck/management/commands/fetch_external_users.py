@@ -36,7 +36,6 @@ class Command(BaseCommand):
 
                 user = User.objects.filter(id=user_id).first()
                 if not user:
-                    # Create a new User with a unique username or other required fields
                     username = f'user_{user_id}' 
                     user = User.objects.create(username=username)
                 
