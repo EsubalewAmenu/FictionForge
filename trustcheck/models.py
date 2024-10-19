@@ -147,6 +147,34 @@ class Verification(models.Model):
         auto_now_add=True,
         help_text="Timestamp when the verification was created."
     )
+    
+    is_disputed = models.BooleanField(
+        default=False,
+        help_text="Indicates if the verification is disputed."
+    )
+    experts = models.ManyToManyField(
+        User,
+        related_name='expert_verifications',
+        blank=True,
+        help_text="Experts assigned to review the verification in case of dispute."
+    )
+    expert_votes = models.JSONField(
+        default=dict,
+        blank=True,
+        help_text="Stores votes from experts. Format: {'expert_id': vote}."
+    )
+    expert_staked_tokens = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=0.0,
+        help_text="Total tokens staked by experts."
+    )
+    resolution_status = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        help_text="The final resolution status after expert review, e.g., 'Valid', 'Invalid', or 'Undecided'."
+    )
 
     class Meta:
         verbose_name = "Verification"
@@ -155,6 +183,12 @@ class Verification(models.Model):
 
     def __str__(self):
         return f"Verification on '{self.submission.title}'"
+
+    def add_expert_vote(self, expert, vote, tokens):
+        """Add an expert's vote to the expert_votes and update the expert_staked_tokens."""
+        self.expert_votes[expert.id] = vote
+        self.expert_staked_tokens += tokens
+        self.save()
 
 
 class ReputationChange(models.Model):
