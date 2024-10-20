@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from .models import Fiction
 
@@ -8,3 +9,8 @@ def fiction_list(request):
 def fiction_detail(request, pk):
     fiction = get_object_or_404(Fiction, pk=pk)
     return render(request, 'fictions/fiction_detail.html', {'fiction': fiction})
+
+
+# Health check view
+def health_check(request):
+    return HttpResponse("OK", status=200)
