@@ -1,7 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericRelation
+from django.contrib.contenttypes.fields import GenericForeignKey
 from django_comments.models import Comment
+from django.contrib.contenttypes.models import ContentType
+
 
 
 class Category(models.Model):
@@ -47,6 +50,11 @@ class DataSubmission(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     is_verified = models.BooleanField(default=False)
     comments = GenericRelation(Comment)
+    
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey('content_type', 'object_id')
+
 
     class Meta:
         ordering = ['-created_at']

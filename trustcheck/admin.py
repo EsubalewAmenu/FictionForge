@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import Category, DataSubmission, Evidence, Verification, ReputationChange, ExternalUser, DataType, Comment
+from django_comments.admin import CommentsAdmin
 
 @admin.register(ExternalUser)
 class ExternalUserAdmin(admin.ModelAdmin):
@@ -14,7 +15,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(DataSubmission)
 class DataSubmissionAdmin(admin.ModelAdmin):
-    list_display = ('title', 'category', 'is_verified', 'created_at', 'updated_at')
+    list_display = ('id','title', 'category', 'is_verified', 'created_at', 'updated_at')
     search_fields = ('title', 'content')
     list_filter = ('category', 'is_verified', 'created_at')
     date_hierarchy = 'created_at'
@@ -68,9 +69,10 @@ class DataTypeAdmin(admin.ModelAdmin):
     search_fields = ('name',)
     list_filter = ('name',)
     
+admin.site.unregister(Comment)
 
-# @admin.register(Comment)
-# class CommentAdmin(admin.ModelAdmin):
-#     list_display = ('id', 'content_type', 'object_pk', 'user', 'comment', 'submit_date', 'is_public', 'is_removed')
-#     list_filter = ('is_public', 'is_removed', 'submit_date', 'content_type')
-#     search_fields = ('comment', 'user__username', 'user_email')
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('id', 'content_type', 'object_pk', 'user', 'comment', 'submit_date', 'is_public', 'is_removed')
+    list_filter = ('is_public', 'is_removed', 'submit_date', 'content_type')
+    search_fields = ('comment', 'user__username', 'user_email')

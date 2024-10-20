@@ -1,17 +1,30 @@
+import logging
 from rest_framework import viewsets, permissions
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+
 from django_comments.models import Comment
 from django.contrib.contenttypes.models import ContentType
+from django.db.models import Prefetch
+
 
 from .models import Category, DataSubmission ,Evidence ,Verification , ReputationChange ,DataType 
 from .serializers import CategorySerializer, DataSubmissionSerializer ,EvidenceSerializer ,VerificationSerializer ,ReputationChangeSerializer,DataTypeSerializer ,CommentSerializer, CommentCreateSerializer
 
+logger = logging.getLogger(__name__)
+
+
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    
 
 class DataSubmissionViewSet(viewsets.ModelViewSet):
     queryset = DataSubmission.objects.all()
     serializer_class = DataSubmissionSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
     
 class EvidenceViewSet(viewsets.ModelViewSet):
     queryset = Evidence.objects.all()

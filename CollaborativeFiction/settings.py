@@ -29,11 +29,13 @@ INSTALLED_APPS = [
     'corsheaders',
     'django.contrib.sites',
     'django_comments',
+    'debug_toolbar',
 
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -45,6 +47,10 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'CollaborativeFiction.urls'
+INTERNAL_IPS = [
+    "127.0.0.1",
+    "localhost",
+]
 
 TEMPLATES = [
     {
