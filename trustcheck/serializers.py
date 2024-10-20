@@ -49,13 +49,13 @@ class CommentCreateSerializer(serializers.ModelSerializer):
             'user_url',
         ]
 
-    def validate(self, attrs):
-        request = self.context['request']
-        print('sssss',request.data)
+    # def validate(self, attrs):
+    #     request = self.context['request']
+    #     print('sssss',request.data)
 
-        if not request.user.is_authenticated:
-            if not attrs.get('user_name'):
-                raise serializers.ValidationError("Name is required for anonymous comments.")
+    #     if not request.user.is_authenticated:
+    #         if not attrs.get('user_name'):
+    #             raise serializers.ValidationError("Name is required for anonymous comments.")
         
 
 

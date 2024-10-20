@@ -51,8 +51,8 @@ class DataSubmission(models.Model):
     is_verified = models.BooleanField(default=False)
     comments = GenericRelation(Comment)
     
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-    object_id = models.PositiveIntegerField()
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, null=True)
+    object_id = models.PositiveIntegerField(null=True)
     content_object = GenericForeignKey('content_type', 'object_id')
 
 
