@@ -3,3 +3,5 @@ djangorestframework
 django-cors-headers
 django-environ
 django-contrib-comments
+django-cors-headers
+requests
