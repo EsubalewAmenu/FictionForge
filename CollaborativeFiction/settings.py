@@ -31,6 +31,8 @@ INSTALLED_APPS = [
     'django_comments',
     'debug_toolbar',
 
+    'djoser'
+
 ]
 
 MIDDLEWARE = [
