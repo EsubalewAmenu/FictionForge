@@ -6,3 +6,4 @@ django-contrib-comments
 django-cors-headers
 django-debug-toolbar
 requests
+djoser
