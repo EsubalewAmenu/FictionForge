@@ -12,5 +12,7 @@ echo "Creating superuser..."
 echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@example.com', 'password123')" | python manage.py shell
 echo "Superuser created."
 
+python manage.py seed_data
+
 # Start the Django development server
 python manage.py runserver 0.0.0.0:8080
