@@ -2,6 +2,9 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Persona, Query
 from .serializers import PersonaSerializer, QuerySerializer
+from rest_framework import status
+from openai import OpenAI
+import os
 
 class PersonaListView(APIView):
     def get(self, request):
@@ -9,16 +12,38 @@ class PersonaListView(APIView):
         serializer = PersonaSerializer(personas, many=True)
         return Response(serializer.data)
 
+client = OpenAI(api_key=os.getenv('OPENAI'))
+
 class QueryView(APIView):
     def post(self, request):
         data = request.data
-        persona = Persona.objects.get(id=data['persona_id'])
-        user_query = data['user_query']
+        try:
+            persona = Persona.objects.get(id=data['persona_id'])
+        except Persona.DoesNotExist:
+            return Response({'error': 'Persona not found.'}, status=status.HTTP_404_NOT_FOUND)
 
-        # Dummy response for now
-        generated_response = f"This is a {persona.name} response for: {user_query}"
+        user_query = data.get('user_query', '')
 
-        # Save the query
+        if not user_query:
+            return Response({'error': 'User query is required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        prompt = f"{persona.description}\nUser: {user_query}\nAssistant:"
+
+        try:
+
+            response = client.chat.completions.with_raw_response.create(
+                messages=[{
+                    "role": "user",
+                    "content": prompt,
+                }],
+                model="gpt-4o-mini",
+            )
+
+            generated_response = response.parse() #response.choices[0].text.strip()
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        # Save the query and response
         query = Query.objects.create(
             persona=persona,
             user_query=user_query,
@@ -26,4 +51,4 @@ class QueryView(APIView):
         )
         serializer = QuerySerializer(query)
 
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)

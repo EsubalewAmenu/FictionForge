@@ -7,3 +7,4 @@ django-cors-headers
 django-debug-toolbar
 requests
 djoser
+openai
