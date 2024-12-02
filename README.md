@@ -1,5 +1,12 @@
 # FictionForge
 
+## How to run
+
+docker build -t fictionforge:latest .
+
+docker run -d -p 8080:8080 --name fictionforge-container fictionforge:latest
+
+
 ## Contribution
 
 To create a pull request, you can follow these steps:
