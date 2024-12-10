@@ -4,7 +4,7 @@
 
 docker build -t fictionforge:latest .
 
-docker run -d -p 8080:8080 --name fictionforge-container fictionforge:latest
+docker run -d -p 8080:8080 --name fictionforge fictionforge:latest
 
 
 ## Contribution
